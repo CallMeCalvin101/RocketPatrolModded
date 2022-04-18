@@ -8,6 +8,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('spaceship', './assets/spaceship.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 5});
         this.load.image('starfield', './assets/starfield.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('fastship', './assets/fastShip.png', {frameWidth: 40, frameHeight: 32, startFrame: 0, endFrame: 5});
     }
 
     create() {
@@ -31,10 +32,17 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width/3, 431, 'rocket', 0, 1);
         this.p2Rocket = new Rocket(this, game.config.width/3 * 2, 431, 'rocket', 0, 2);
 
-        // Ship animation
+        // Ship animations
         this.anims.create({
             key: 'move',
             frames: this.anims.generateFrameNumbers('spaceship', { start: 0, end: 5, first: 0}),
+            frameRate: 15,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'fastmove',
+            frames: this.anims.generateFrameNumbers('fastship', { start: 0, end: 5, first: 0}),
             frameRate: 15,
             repeat: -1
         })
@@ -44,10 +52,13 @@ class Play extends Phaser.Scene {
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
 
+        this.SPship = new Fastship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'fastship', 0, 50).setOrigin(0,0);
+
         // Help from http://phaser.io/news/2019/04/endless-runner-tutorial-part-2
         this.ship01.anims.play('move');
         this.ship02.anims.play('move');
         this.ship03.anims.play('move');
+        this.SPship.anims.play('fastmove');
 
         // Green Rectangle
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
@@ -127,6 +138,7 @@ class Play extends Phaser.Scene {
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
+            this.SPship.update();
             this.timeLeft = (game.settings.gameTimer / 100) - Math.floor(this.curTime / 100);
             this.timerText.text = this.timeLeft;
         }
@@ -147,6 +159,11 @@ class Play extends Phaser.Scene {
             this.p1Score += this.shipExplode(this.ship01);
             this.scoreLeft.text = this.p1Score;
         }
+        if (this.checkCollisions(this.p1Rocket, this.SPship)) {
+            this.p1Rocket.reset();
+            this.p1Score += this.shipExplode(this.SPship);
+            this.scoreLeft.text = this.p1Score;
+        }
         if (this.checkCollisions(this.p2Rocket, this.ship03)) {
             this.p2Rocket.reset();
             this.p2Score += this.shipExplode(this.ship03);
@@ -160,6 +177,11 @@ class Play extends Phaser.Scene {
         if (this.checkCollisions(this.p2Rocket, this.ship01)) {
             this.p2Rocket.reset();
             this.p2Score += this.shipExplode(this.ship01);
+            this.scoreRight.text = this.p2Score;
+        }
+        if (this.checkCollisions(this.p2Rocket, this.SPship)) {
+            this.p2Rocket.reset();
+            this.p2Score += this.shipExplode(this.SPship);
             this.scoreRight.text = this.p2Score;
         }
     }
