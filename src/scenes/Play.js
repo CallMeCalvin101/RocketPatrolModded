@@ -44,6 +44,7 @@ class Play extends Phaser.Scene {
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
 
+        // Help from http://phaser.io/news/2019/04/endless-runner-tutorial-part-2
         this.ship01.anims.play('move');
         this.ship02.anims.play('move');
         this.ship03.anims.play('move');
@@ -65,9 +66,11 @@ class Play extends Phaser.Scene {
             frameRate: 30
         })
 
-        // Initialize scores
+        // Initialize scores and timer
         this.p1Score = 0;
         this.p2Score = 0;
+        this.timeLeft = game.settings.gameTimer / 100;
+        this.curTime = 0;
 
         //displays score
         let scoreConfig = {
@@ -83,6 +86,7 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
 
+        // UI Texts
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
         this.scoreRight = this.add.text(game.config.width - borderUISize - borderPadding - scoreConfig.fixedWidth, borderUISize + borderPadding * 2, this.p2Score, scoreConfig);
 
@@ -91,14 +95,20 @@ class Play extends Phaser.Scene {
 
         //Play timer
         scoreConfig.fixedWidth = 0;
+        
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
+        scoreConfig.fixedWidth = 100;
+        this.timerText = this.add.text(((game.config.width/2) - (scoreConfig.fixedWidth/2)), borderUISize + borderPadding * 2, this.time.now, scoreConfig);
+        scoreConfig.fixedWidth = 0;
     }
 
     update() {
+        this.curTime += 1000/60;
         //check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
@@ -117,6 +127,8 @@ class Play extends Phaser.Scene {
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
+            this.timeLeft = (game.settings.gameTimer / 100) - Math.floor(this.curTime / 100);
+            this.timerText.text = this.timeLeft;
         }
 
         //Checks collisions
