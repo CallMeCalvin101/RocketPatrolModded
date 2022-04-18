@@ -52,8 +52,9 @@ class Play extends Phaser.Scene {
             frameRate: 30
         })
 
-        // Initialize score
+        // Initialize scores
         this.p1Score = 0;
+        this.p2Score = 0;
 
         //displays score
         let scoreConfig = {
@@ -70,6 +71,7 @@ class Play extends Phaser.Scene {
         }
 
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
+        this.scoreRight = this.add.text(game.config.width - borderUISize - borderPadding - scoreConfig.fixedWidth, borderUISize + borderPadding * 2, this.p2Score, scoreConfig);
 
         //Game Over flag
         this.gameOver = false;
@@ -107,27 +109,33 @@ class Play extends Phaser.Scene {
         //Checks collisions
         if (this.checkCollisions(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.ship03);
+            this.p1Score += this.shipExplode(this.ship03);
+            this.scoreLeft.text = this.p1Score;
         }
         if (this.checkCollisions(this.p1Rocket, this.ship02)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.ship02);
+            this.p1Score += this.shipExplode(this.ship02);
+            this.scoreLeft.text = this.p1Score;
         }
         if (this.checkCollisions(this.p1Rocket, this.ship01)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.ship01);
+            this.p1Score += this.shipExplode(this.ship01);
+            this.scoreLeft.text = this.p1Score;
         }
         if (this.checkCollisions(this.p2Rocket, this.ship03)) {
             this.p2Rocket.reset();
-            this.shipExplode(this.ship03);
+            this.p2Score += this.shipExplode(this.ship03);
+            this.scoreRight.text = this.p2Score;
         }
         if (this.checkCollisions(this.p2Rocket, this.ship02)) {
             this.p2Rocket.reset();
-            this.shipExplode(this.ship02);
+            this.p2Score += this.shipExplode(this.ship02);
+            this.scoreRight.text = this.p2Score;
         }
         if (this.checkCollisions(this.p2Rocket, this.ship01)) {
             this.p2Rocket.reset();
-            this.shipExplode(this.ship01);
+            this.p2Score += this.shipExplode(this.ship01);
+            this.scoreRight.text = this.p2Score;
         }
     }
 
@@ -153,11 +161,9 @@ class Play extends Phaser.Scene {
             ship.alpha = 1;
             boom.destroy();
         });
-        //adds points
-        this.p1Score += ship.points;
-        this.scoreLeft.text = this.p1Score;
 
         //sound
         this.sound.play('sfx_explosion');
+        return ship.points;
     }
 }
