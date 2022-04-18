@@ -8,7 +8,7 @@ let config = {
 }
 
 //reserve keyboard vars
-let keyF, keyR, keyLEFT, keyRIGHT;
+let keyW, keyA, keyD, keyI, keyJ, keyL, keyR, keyLEFT, keyRIGHT;
 
 //set UI sizes
 let borderUISize = config.height / 15;
