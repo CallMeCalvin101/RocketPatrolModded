@@ -10,7 +10,7 @@
  *      10 - New Title Screen
  *      10 - Animated Ships
  *      10 - UI Border w/ Art
- * 1    10 - Display Time Remaining
+ *      10 - Display Time Remaining
  */
 
 console.log("Hello from main.js");
