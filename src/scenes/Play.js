@@ -5,7 +5,7 @@ class Play extends Phaser.Scene {
 
     preload() {
         this.load.image('rocket', './assets/rocket.png');
-        this.load.image('spaceship', './assets/spaceship.png');
+        this.load.spritesheet('spaceship', './assets/spaceship.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 5});
         this.load.image('starfield', './assets/starfield.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
@@ -31,10 +31,22 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width/3, 431, 'rocket', 0, 1);
         this.p2Rocket = new Rocket(this, game.config.width/3 * 2, 431, 'rocket', 0, 2);
 
+        // Ship animation
+        this.anims.create({
+            key: 'move',
+            frames: this.anims.generateFrameNumbers('spaceship', { start: 0, end: 5, first: 0}),
+            frameRate: 15,
+            repeat: -1
+        })
+
         // Add spaceships (x3)
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
+
+        this.ship01.anims.play('move');
+        this.ship02.anims.play('move');
+        this.ship03.anims.play('move');
 
         // Green Rectangle
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
@@ -44,6 +56,7 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
         this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
+
 
         // Explosion
         this.anims.create({
