@@ -4,9 +4,11 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('rocket', './assets/rocket.png');
+        this.load.image('rocket1', './assets/rocket1.png');
+        this.load.image('rocket2', './assets/rocket2.png');
         this.load.spritesheet('spaceship', './assets/spaceship.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 5});
         this.load.image('starfield', './assets/starfield.png');
+        this.load.image('border', './assets/border.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         this.load.spritesheet('fastship', './assets/fastShip.png', {frameWidth: 40, frameHeight: 32, startFrame: 0, endFrame: 5});
     }
@@ -29,8 +31,8 @@ class Play extends Phaser.Scene {
         this.bg = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0,0);
 
         // Players
-        this.p1Rocket = new Rocket(this, game.config.width/3, 431, 'rocket', 0, 1);
-        this.p2Rocket = new Rocket(this, game.config.width/3 * 2, 431, 'rocket', 0, 2);
+        this.p1Rocket = new Rocket(this, game.config.width/3, 431, 'rocket1', 0, 1);
+        this.p2Rocket = new Rocket(this, game.config.width/3 * 2, 431, 'rocket2', 0, 2);
 
         // Ship animations
         this.anims.create({
@@ -60,14 +62,11 @@ class Play extends Phaser.Scene {
         this.ship03.anims.play('move');
         this.SPship.anims.play('fastmove');
 
-        // Green Rectangle
-        this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
+        // Score Rectangle
+        this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0xf2f2f2).setOrigin(0, 0);
 
-        // White Border
-        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
+        // Border
+        this.border = this.add.tileSprite(0, 0, 640, 480, 'border').setOrigin(0,0);
 
 
         // Explosion
@@ -88,7 +87,7 @@ class Play extends Phaser.Scene {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
-            color: '#843605',
+            color: '#000',
             align: 'right',
             padding: {
                 top: 5,
