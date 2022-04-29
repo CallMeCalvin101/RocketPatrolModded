@@ -77,7 +77,7 @@ class Play extends Phaser.Scene {
         })
 
         // Initialize scores and timer
-        this.p1Score = 0;
+        this.p1Score = 1000;
         this.p2Score = 0;
         this.timeLeft = game.settings.gameTimer / 100;
         this.curTime = 0;
@@ -138,7 +138,7 @@ class Play extends Phaser.Scene {
             this.ship02.update();
             this.ship03.update();
             this.SPship.update();
-            this.timeLeft = (game.settings.gameTimer / 100) - Math.floor(this.curTime / 100);
+            this.timeLeft = 0 - Math.floor(this.curTime / 100);
             this.timerText.text = this.timeLeft;
         }
 

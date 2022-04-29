@@ -32,8 +32,8 @@ class Menu extends Phaser.Scene {
         //Press <- for Novice or -> for Expert
         menuConfig.color = '#000';
         //this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height + borderPadding - 2 * (borderUISize + borderPadding), 'P1: Fire (W) Left (A) Right (D)   <- SLOW   ', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height + borderPadding - (borderUISize + borderPadding), 'P2: Fire (I) Left (J) Right (K)      FAST ->', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height + borderPadding - 2 * (borderUISize + borderPadding), 'My Game Is In Shambles   <- SLOW   ', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height + borderPadding - (borderUISize + borderPadding), 'Help me please      FAST ->', menuConfig).setOrigin(0.5);
 
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
