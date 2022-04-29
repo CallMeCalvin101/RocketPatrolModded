@@ -128,8 +128,8 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
 
-        this.bg.tilePositionX -= 4;
-        this.bg.tilePositionY -= 2;
+        this.bg.tilePositionX -= 9;
+        this.bg.tilePositionY -= 5;
 
         if (!this.gameOver) {
             this.p1Rocket.update();
