@@ -2,7 +2,7 @@ class Fastship extends Spaceship {
     constructor (scene, x, y, texture, frame, pointValue) {
         super(scene, x, y, texture, frame, pointValue);
         scene.add.existing(this);
-        this.moveSpeed = game.settings.spaceshipSpeed + 5;
+        this.moveSpeed = game.settings.spaceshipSpeed + 50;
         this.center = this.y;
     }
 
